@@ -1,5 +1,7 @@
+"use client";
 import Image from "next/image";
 import { MotionDiv } from "./MotionDiv";
+import { useRouter } from "next/navigation";
 
 export interface AnimeProp {
   id: string;
@@ -11,6 +13,7 @@ export interface AnimeProp {
   episodes: number;
   episodes_aired: number;
   score: string;
+  url: string;
 }
 
 interface Prop {
@@ -23,7 +26,11 @@ const variants = {
   visible: { opacity: 1 },
 };
 
+const apiUrl = "https://shikimori.one";
+
 function AnimeCard({ anime, index }: Prop) {
+  const router = useRouter();
+
   return (
     <MotionDiv
       variants={variants}
@@ -35,11 +42,12 @@ function AnimeCard({ anime, index }: Prop) {
         duration: 0.5,
       }}
       viewport={{ amount: 0 }}
-      className="max-w-sm rounded relative w-full"
+      className="max-w-sm rounded relative w-full cursor-pointer"
+      onClick={() => router.push(`${apiUrl}${anime.url}`)}
     >
       <div className="relative w-full h-[37vh]">
         <Image
-          src={`https://shikimori.one${anime.image.original}`}
+          src={`${apiUrl}${anime.image.original}`}
           alt={anime.name}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
